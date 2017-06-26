@@ -241,7 +241,7 @@ public class KJTree{
     /*
      numberOfRowsInSection -----------------------------------------------------------------------------------------
      */
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> NSInteger {
+    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> NSInteger {
         
         arrayVisibles.removeAll() // remove all objects first
         
@@ -307,7 +307,7 @@ public class KJTree{
     /*
      cellIdentifierUsingTableView -----------------------------------------------------------------------------------
      */
-    public func cellIdentifierUsingTableView(_ tableView: UITableView, cellForRowAt indexPath: NSIndexPath) -> Node{
+    public func cellIdentifierUsingTableView(tableView: UITableView, cellForRowAt indexPath: NSIndexPath) -> Node{
         return arrayVisibles[indexPath.row]
     }
     /*
@@ -322,7 +322,7 @@ public class KJTree{
         case expand, shrink, none
     }
     
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: NSIndexPath) -> Node{
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) -> Node{
         
         let node = arrayVisibles[indexPath.row]
         var cellsToBeUpdated: [NSInteger] = []
