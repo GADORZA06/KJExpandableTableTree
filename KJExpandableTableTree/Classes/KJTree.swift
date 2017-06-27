@@ -251,6 +251,10 @@ public class KJTree{
             let parent = arrayParents[i]
             
             let node = Node(indexParam: "\(i)", idParam: parent.keyIdentity, givenIndexParam: parent.givenIndex)
+            // MARK: Cle - Customized
+            // copy arrayChilds to node
+            node.arrayChilds = parent.arrayChilds
+            
             arrayVisibles.append(node)
             
             var currentState: State = .none // State decision open, close or none.
@@ -280,6 +284,9 @@ public class KJTree{
             let childIndex = parentIndex + ".\(i)"
             
             let node = Node(indexParam: childIndex, idParam: child.keyIdentity, givenIndexParam: child.givenIndex)
+            // MARK: Cle - Customized
+            // copy arrayChilds to node
+            node.arrayChilds = child.arrayChilds
             node.index = childIndex
             arrayVisibles.append(node)
             
@@ -505,7 +512,9 @@ public enum State{
 
 public class Node {
     
-    private var arrayChilds: [Child] = []
+    // MARK: Cle - Customized
+    // changed to public private(set) from private - so that user can read arrayChilds
+    public private(set) var arrayChilds: [Child] = []
     
     // identity key
     public var keyIdentity: String = ""
