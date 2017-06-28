@@ -254,6 +254,7 @@ public class KJTree{
             // MARK: Cle - Customized
             // copy arrayChilds to node
             node.arrayChilds = parent.arrayChilds
+            node.name = parent.name
             
             arrayVisibles.append(node)
             
@@ -287,6 +288,8 @@ public class KJTree{
             // MARK: Cle - Customized
             // copy arrayChilds to node
             node.arrayChilds = child.arrayChilds
+            node.name = child.name
+            
             node.index = childIndex
             arrayVisibles.append(node)
             
