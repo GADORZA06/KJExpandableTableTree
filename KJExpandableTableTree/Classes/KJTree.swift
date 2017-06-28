@@ -513,6 +513,8 @@ public class Node {
     // MARK: Cle - Customized
     // changed to public private(set) from private - so that user can read arrayChilds
     public private(set) var arrayChilds: [Child] = []
+    // Cle -
+    public var name: String = ""
     
     // identity key
     public var keyIdentity: String = ""
