@@ -12,8 +12,8 @@ import UIKit
 public class KJTree{
     
     // Parent to child collection.
-    fileprivate var arrayParents: [Parent] = []
-    fileprivate var arrayVisibles: [Node] = []
+    private var arrayParents: [Parent] = []
+    private var arrayVisibles: [Node] = []
     
     public init() {
         
@@ -35,18 +35,18 @@ public class KJTree{
             let index = indices[i]
             
             // Components
-            var components = index.components(separatedBy: ".")
+            var components = index.componentsSeparatedByString(".")
             
-            if arrayParents.contains(where: { $0.givenIndex == components.first }) {
+            if arrayParents.contains({ $0.givenIndex == components.first }) {
                 
                 // if parent exists
-                let position = arrayParents.index(where: { $0.givenIndex == components.first })
+                let position = arrayParents.indexOf({ $0.givenIndex == components.first })
                 components.removeFirst()
                 let parent = self.arrayParents[position!]
                 
                 // if there are no subchilds, only a child inside parent.
                 if components.count == 1 {
-                    if !parent.arrayChilds.contains(where: {$0.givenIndex == components.first}) {
+                    if !parent.arrayChilds.contains({$0.givenIndex == components.first}) {
                         // create new child
                         let child = Child()
                         child.givenIndex = index
@@ -56,12 +56,12 @@ public class KJTree{
                 }else{
                     // if there are subchilds.
                     let internalIndex = parent.givenIndex+"."+components.first!
-                    if parent.arrayChilds.contains(where: {$0.givenIndex == internalIndex}) {
-                        let position = parent.arrayChilds.index(where: { $0.givenIndex == internalIndex })
+                    if parent.arrayChilds.contains({$0.givenIndex == internalIndex}) {
+                        let position = parent.arrayChilds.indexOf({ $0.givenIndex == internalIndex })
                         var child = parent.arrayChilds[position!]
                         child.givenIndex = internalIndex
                         components.removeFirst()
-                        self.addChild(inChild: &child, components: &components, index: index)
+                        self.addChild(&child, components: &components, index: index)
                         
                     }else{
                         // create new child
@@ -69,7 +69,7 @@ public class KJTree{
                         child.givenIndex = index
                         parent.arrayChilds.append(child)
                         components.removeFirst()
-                        self.justAddChildsIn(inChild: &child, components: &components)
+                        self.justAddChildsIn(&child, components: &components)
                     }
                 }
             }else{
@@ -95,17 +95,18 @@ public class KJTree{
                     child.givenIndex = internalIndex
                     parent.arrayChilds.append(child)
                     components.removeFirst()
-                    self.justAddChildsIn(inChild: &child, components: &components)
+                    self.justAddChildsIn(&child, components: &components)
                 }
             }
         }
     }
-    func addChild(inChild:inout Child, components:inout [String], index: String) {
+    func addChild(inout inChild: Child, inout components: [String], index: String) {
         
         // if there are no subchilds, only a child inside parent.
         if components.count == 1 {
             let internalIndex = inChild.givenIndex+"."+components.first!
-            if !inChild.arrayChilds.contains(where: {$0.givenIndex == internalIndex}) {
+            
+            if !inChild.arrayChilds.contains({$0.givenIndex == internalIndex}) {
                 // create new child
                 let child = Child()
                 child.givenIndex = internalIndex
@@ -115,12 +116,12 @@ public class KJTree{
         }else{
             // if there are subchilds.
             let internalIndex = inChild.givenIndex+"."+components.first!
-            if inChild.arrayChilds.contains(where: {$0.givenIndex == internalIndex}) {
-                let position = inChild.arrayChilds.index(where: { $0.givenIndex == internalIndex })
+            if inChild.arrayChilds.contains({$0.givenIndex == internalIndex}) {
+                let position = inChild.arrayChilds.indexOf({ $0.givenIndex == internalIndex })
                 var child = inChild.arrayChilds[position!]
                 child.givenIndex = internalIndex
                 components.removeFirst()
-                self.addChild(inChild: &child, components: &components, index: index)
+                self.addChild(&child, components: &components, index: index)
                 
             }else{
                 // create new child
@@ -128,11 +129,11 @@ public class KJTree{
                 child.givenIndex = internalIndex
                 inChild.arrayChilds.append(child)
                 components.removeFirst()
-                self.justAddChildsIn(inChild: &child, components: &components)
+                self.justAddChildsIn(&child, components: &components)
             }
         }
     }
-    func justAddChildsIn(inChild:inout Child, components:inout [String]) {
+    func justAddChildsIn(inout inChild: Child, inout components: [String]) {
         if components.count == 1 {
             // create new child
             let internalIndex = inChild.givenIndex+"."+components.first!
@@ -146,7 +147,7 @@ public class KJTree{
             child.givenIndex = internalIndex
             inChild.arrayChilds.append(child)
             components.removeFirst()
-            self.justAddChildsIn(inChild: &child, components: &components)
+            self.justAddChildsIn(&child, components: &components)
         }
     }
     /*
@@ -171,22 +172,22 @@ public class KJTree{
             
             let parentInstance = Parent()
             if let idKeyConfirmed = idKey {
-                if let key = parentConfirmed.object(forKey: idKeyConfirmed) as? String {
+                if let key = parentConfirmed.objectForKey(idKeyConfirmed) as? String {
                     parentInstance.keyIdentity = key
                 }else{
-                    if let keyAny = parentConfirmed.object(forKey: idKeyConfirmed) {
+                    if let keyAny = parentConfirmed.objectForKey(idKeyConfirmed) {
                         parentInstance.keyIdentity = "\(keyAny)"
                     }
                 }
                 
             }
             
-            guard let childs = parentConfirmed.object(forKey: childrenKey) as? NSArray, childs.count != 0 else{
+            guard let childs = parentConfirmed.objectForKey(childrenKey) as? NSArray where childs.count != 0 else{
                 arrayParents.append(parentInstance)
                 continue
             }
             
-            let arrayOfChilds: [Child] = self.addChildsInTree(childs: childs, childrenKey: childrenKey, idKey: idKey)
+            let arrayOfChilds: [Child] = self.addChildsInTree(childs, childrenKey: childrenKey, idKey: idKey)
             parentInstance.arrayChilds = arrayOfChilds
             
             arrayParents.append(parentInstance)
@@ -206,22 +207,22 @@ public class KJTree{
             
             let childInstance = Child()
             if let idKeyConfirmed = idKey {
-                if let key = childConfirmed.object(forKey: idKeyConfirmed) as? String {
+                if let key = childConfirmed.objectForKey(idKeyConfirmed) as? String {
                     childInstance.keyIdentity = key
                 }else{
-                    if let keyAny = childConfirmed.object(forKey: idKeyConfirmed) {
+                    if let keyAny = childConfirmed.objectForKey(idKeyConfirmed) {
                         childInstance.keyIdentity = "\(keyAny)"
                     }
                 }
                 
             }
             
-            guard let childs = child?.object(forKey: childrenKey) as? NSArray, childs.count != 0 else{
+            guard let childs = child?.objectForKey(childrenKey) as? NSArray where childs.count != 0 else{
                 arrayOfChilds.append(childInstance)
                 continue
             }
             
-            let arrayOfSubChilds = self.addChildsInTree(childs: childs, childrenKey: childrenKey, idKey: idKey)
+            let arrayOfSubChilds = self.addChildsInTree(childs, childrenKey: childrenKey, idKey: idKey)
             childInstance.arrayChilds = arrayOfSubChilds
             
             arrayOfChilds.append(childInstance)
@@ -240,7 +241,7 @@ public class KJTree{
     /*
      numberOfRowsInSection -----------------------------------------------------------------------------------------
      */
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> NSInteger {
+    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> NSInteger {
         
         arrayVisibles.removeAll() // remove all objects first
         
@@ -261,7 +262,7 @@ public class KJTree{
             if parent.isVisibility {
                 if parent.arrayChilds.count != 0{
                     currentState = .open
-                    self.calculateVisibileChilds(parentIndex: "\(i)", arrayChilds: parent.arrayChilds)
+                    self.calculateVisibileChilds("\(i)", arrayChilds: parent.arrayChilds)
                 }
             }else{
                 if parent.arrayChilds.count != 0{
@@ -296,7 +297,7 @@ public class KJTree{
             if child.isVisibility {
                 if child.arrayChilds.count != 0{
                     currentState = .open
-                    self.calculateVisibileChilds(parentIndex: childIndex, arrayChilds: child.arrayChilds)
+                    self.calculateVisibileChilds(childIndex, arrayChilds: child.arrayChilds)
                 }
             }else{
                 if child.arrayChilds.count != 0{
@@ -316,7 +317,7 @@ public class KJTree{
     /*
      cellIdentifierUsingTableView -----------------------------------------------------------------------------------
      */
-    public func cellIdentifierUsingTableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> Node{
+    public func cellIdentifierUsingTableView(tableView: UITableView, cellForRowAt indexPath: NSIndexPath) -> Node{
         return arrayVisibles[indexPath.row]
     }
     /*
@@ -330,11 +331,12 @@ public class KJTree{
     enum ExpansionOption {
         case expand, shrink, none
     }
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) -> Node{
+    
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) -> Node{
         
         let node = arrayVisibles[indexPath.row]
         var cellsToBeUpdated: [NSInteger] = []
-        var indices = node.index.components(separatedBy: ".")
+        var indices = node.index.componentsSeparatedByString(".")
         var expansion: ExpansionOption = .none
         
         /*
@@ -379,7 +381,7 @@ public class KJTree{
                     cellsToBeUpdated.append(indexPath.row+i)
                 }
                 parent.expandedRows = 0
-                self.closeAllVisibleCells(childs: parent.arrayChilds)
+                self.closeAllVisibleCells(parent.arrayChilds)
             }
         }else{
             // get parent instance and check there are any childs of it, if yes go through it?
@@ -387,7 +389,7 @@ public class KJTree{
             indices.removeFirst()
             
             // openNoOfChilds holds no of childs open inside parent. which ultimatey added/removed (based on expansion and shrinking) to expandableRows property of parent. Same will be done at childs to childs.
-            let openNoOfChilds = self.visibleChilds(childs: parent.arrayChilds, indices: &indices, index: indexPath.row, cellsUpdatedHolder: &cellsToBeUpdated, expansionOption: &expansion)
+            let openNoOfChilds = self.visibleChilds(parent.arrayChilds, indices: &indices, index: indexPath.row, cellsUpdatedHolder: &cellsToBeUpdated, expansionOption: &expansion)
             if expansion == .expand {
                 parent.expandedRows += openNoOfChilds
             }else{
@@ -396,7 +398,7 @@ public class KJTree{
         }
         
         // get indexpath about to insert/remove cells
-        var indexpathsInserted: [IndexPath] = []
+        var indexpathsInserted: [NSIndexPath] = []
         // for effects of plus, minus or none based on expand, shrink.
         var updateStateOfRow: NSInteger = -1
         for row in cellsToBeUpdated {
@@ -404,26 +406,26 @@ public class KJTree{
             if updateStateOfRow == -1{
                 updateStateOfRow = row-1
             }
-            let indexpath: IndexPath = IndexPath(row: row, section: 0)
+            let indexpath: NSIndexPath = NSIndexPath(forRow: row, inSection: 0)
             indexpathsInserted.append(indexpath)
         }
         if expansion == .expand {
             // Insert rows
-            tableView.insertRows(at: indexpathsInserted, with: .automatic)
+            tableView.insertRowsAtIndexPaths(indexpathsInserted, withRowAnimation: .Automatic)
         }else{
             // remove rows
-            tableView.deleteRows(at: indexpathsInserted, with: .automatic)
+            tableView.deleteRowsAtIndexPaths(indexpathsInserted, withRowAnimation: .Automatic)
         }
         // indicates there is some expansion or shrinking by updating previous cell with plus, minus or none.
         if updateStateOfRow != -1 {
-            let indexpath: IndexPath = IndexPath(row: updateStateOfRow, section: 0)
-            tableView.reloadRows(at: [indexpath], with: .automatic)
+            let indexpath: NSIndexPath = NSIndexPath(forRow: updateStateOfRow, inSection: 0)
+            tableView.reloadRowsAtIndexPaths([indexpath], withRowAnimation: .Automatic)
         }
         
         
         return node
     }
-    func visibleChilds(childs: [Child], indices:inout [String], index: NSInteger, cellsUpdatedHolder cellsToBeUpdated:inout [NSInteger], expansionOption expansion: inout ExpansionOption) -> NSInteger {
+    func visibleChilds(childs: [Child], inout indices: [String], index: NSInteger, inout cellsUpdatedHolder  cellsToBeUpdated: [NSInteger], inout expansionOption  expansion:  ExpansionOption) -> NSInteger {
         
         if indices.count == 1{
             
@@ -465,14 +467,14 @@ public class KJTree{
                 
                 let expandableRows = child.expandedRows
                 child.expandedRows = 0
-                self.closeAllVisibleCells(childs: child.arrayChilds)  // Close all visible childs of shrinking child/parent.
+                self.closeAllVisibleCells(child.arrayChilds)  // Close all visible childs of shrinking child/parent.
                 return expandableRows
                 // Why expandable rows should be returned, because you expanded up to 4th level, and you pressed 2nd level to close 3rd and 4th both. So sending 2nd level childs will only contain 3rd level cells not 4th level, whereas expandable rows will contains all the sublevels.
             }
         }else{
             let child = childs[(indices.first?.integerValue())!]
             indices.removeFirst()
-            let openNoOfChilds = self.visibleChilds(childs: child.arrayChilds, indices: &indices, index: index, cellsUpdatedHolder: &cellsToBeUpdated, expansionOption: &expansion)
+            let openNoOfChilds = self.visibleChilds(child.arrayChilds, indices: &indices, index: index, cellsUpdatedHolder: &cellsToBeUpdated, expansionOption: &expansion)
             if expansion == .expand {
                 child.expandedRows += openNoOfChilds
             }else{
@@ -488,7 +490,7 @@ public class KJTree{
             
             // Indicates there are childs
             if child.arrayChilds.count != 0{
-                self.closeAllVisibleCells(childs: child.arrayChilds)
+                self.closeAllVisibleCells(child.arrayChilds)
             }
         }
     }
@@ -523,8 +525,8 @@ public class Node {
     public var keyIdentity: String = ""
     
     // Private instances
-    fileprivate var isVisibility = false    // This will visible or invisible no of rows based on selection.
-    fileprivate var expandedRows = 0        // This will hold a total of visible rows under it.
+    private var isVisibility = false    // This will visible or invisible no of rows based on selection.
+    private var expandedRows = 0        // This will hold a total of visible rows under it.
     
     // Indecies helper property
     public var index = "-1"
