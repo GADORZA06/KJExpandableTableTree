@@ -409,15 +409,15 @@ public class KJTree{
         }
         if expansion == .expand {
             // Insert rows
-            tableView.insertRows(at: indexpathsInserted, with: .fade)
+            tableView.insertRows(at: indexpathsInserted, with: .automatic)
         }else{
             // remove rows
-            tableView.deleteRows(at: indexpathsInserted, with: .fade)
+            tableView.deleteRows(at: indexpathsInserted, with: .automatic)
         }
         // indicates there is some expansion or shrinking by updating previous cell with plus, minus or none.
         if updateStateOfRow != -1 {
             let indexpath: IndexPath = IndexPath(row: updateStateOfRow, section: 0)
-            tableView.reloadRows(at: [indexpath], with: .none)
+            tableView.reloadRows(at: [indexpath], with: .automatic)
         }
         
         
