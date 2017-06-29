@@ -411,15 +411,15 @@ public class KJTree{
         }
         if expansion == .expand {
             // Insert rows
-            tableView.insertRowsAtIndexPaths(indexpathsInserted, withRowAnimation: .Fade)
+            tableView.insertRowsAtIndexPaths(indexpathsInserted, withRowAnimation: .Automatic)
         }else{
             // remove rows
-            tableView.deleteRowsAtIndexPaths(indexpathsInserted, withRowAnimation: .Fade)
+            tableView.deleteRowsAtIndexPaths(indexpathsInserted, withRowAnimation: .Automatic)
         }
         // indicates there is some expansion or shrinking by updating previous cell with plus, minus or none.
         if updateStateOfRow != -1 {
             let indexpath: NSIndexPath = NSIndexPath(forRow: updateStateOfRow, inSection: 0)
-            tableView.reloadRowsAtIndexPaths([indexpath], withRowAnimation: .None)
+            tableView.reloadRowsAtIndexPaths([indexpath], withRowAnimation: .Automatic)
         }
         
         
