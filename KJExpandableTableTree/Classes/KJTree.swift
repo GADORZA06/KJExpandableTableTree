@@ -15,6 +15,10 @@ public class KJTree{
     private var arrayParents: [Parent] = []
     private var arrayVisibles: [Node] = []
     
+    public var insertRowAnimation: UITableViewRowAnimation = .Automatic
+    public var deleteRowAnimation: UITableViewRowAnimation = .Automatic
+    public var selectedRowAnimation: UITableViewRowAnimation = .Automatic
+    
     public init() {
         
     }
@@ -411,15 +415,15 @@ public class KJTree{
         }
         if expansion == .expand {
             // Insert rows
-            tableView.insertRowsAtIndexPaths(indexpathsInserted, withRowAnimation: .Automatic)
+            tableView.insertRowsAtIndexPaths(indexpathsInserted, withRowAnimation: insertRowAnimation)
         }else{
             // remove rows
-            tableView.deleteRowsAtIndexPaths(indexpathsInserted, withRowAnimation: .Automatic)
+            tableView.deleteRowsAtIndexPaths(indexpathsInserted, withRowAnimation: deleteRowAnimation)
         }
         // indicates there is some expansion or shrinking by updating previous cell with plus, minus or none.
         if updateStateOfRow != -1 {
             let indexpath: NSIndexPath = NSIndexPath(forRow: updateStateOfRow, inSection: 0)
-            tableView.reloadRowsAtIndexPaths([indexpath], withRowAnimation: .Automatic)
+            tableView.reloadRowsAtIndexPaths([indexpath], withRowAnimation: selectedRowAnimation)
         }
         
         
