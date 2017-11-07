@@ -421,10 +421,10 @@ public class KJTree{
             tableView.deleteRowsAtIndexPaths(indexpathsInserted, withRowAnimation: deleteRowAnimation)
         }
         // indicates there is some expansion or shrinking by updating previous cell with plus, minus or none.
-        if updateStateOfRow != -1 {
-            let indexpath: NSIndexPath = NSIndexPath(forRow: updateStateOfRow, inSection: 0)
-            tableView.reloadRowsAtIndexPaths([indexpath], withRowAnimation: selectedRowAnimation)
-        }
+//        if updateStateOfRow != -1 {
+//            let indexpath: NSIndexPath = NSIndexPath(forRow: updateStateOfRow, inSection: 0)
+//            tableView.reloadRowsAtIndexPaths([indexpath], withRowAnimation: selectedRowAnimation)
+//        }
         
         
         return node
