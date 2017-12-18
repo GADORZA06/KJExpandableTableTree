@@ -336,7 +336,7 @@ public class KJTree{
         case expand, shrink, none
     }
     
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) -> Node{
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath, section: Int) -> Node{
         
         let node = arrayVisibles[indexPath.row]
         var cellsToBeUpdated: [NSInteger] = []
@@ -410,7 +410,7 @@ public class KJTree{
             if updateStateOfRow == -1{
                 updateStateOfRow = row-1
             }
-            let indexpath: NSIndexPath = NSIndexPath(forRow: row, inSection: 0)
+            let indexpath: NSIndexPath = NSIndexPath(forRow: row, inSection: section)
             indexpathsInserted.append(indexpath)
         }
         if expansion == .expand {
