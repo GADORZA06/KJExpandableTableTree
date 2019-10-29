@@ -15,9 +15,9 @@ open class KJTree{
     fileprivate var arrayParents: [Parent] = []
     fileprivate var arrayVisibles: [Node] = []
     
-    open var insertRowAnimation: UITableViewRowAnimation = .automatic
-    open var deleteRowAnimation: UITableViewRowAnimation = .automatic
-    open var selectedRowAnimation: UITableViewRowAnimation = .automatic
+    open var insertRowAnimation: UITableView.RowAnimation = .automatic
+    open var deleteRowAnimation: UITableView.RowAnimation = .automatic
+    open var selectedRowAnimation: UITableView.RowAnimation = .automatic
     
     public init() {
         

@@ -51,7 +51,7 @@ class ViewController: UIViewController {
         
         tableview.delegate = self
         tableview.dataSource = self
-        tableview.rowHeight = UITableViewAutomaticDimension
+        tableview.rowHeight = UITableView.automaticDimension
         tableview.estimatedRowHeight = 44
     }
 
