@@ -68,7 +68,7 @@ class ViewController: UIViewController {
         
         tableview.dataSource = self
         tableview.delegate = self
-        tableview.rowHeight = UITableViewAutomaticDimension
+        tableview.rowHeight = UITableView.automaticDimension
         tableview.estimatedRowHeight = 44
         tableview.tableFooterView = UIView(frame: .zero)
         
@@ -176,7 +176,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let node = kjtreeInstance.tableView(tableView, didSelectRowAt: indexPath)
+        let node = kjtreeInstance.tableView(tableView, didSelectRowAtIndexPath: indexPath, section: indexPath.section)
         print(node.index)
         print(node.keyIdentity)
         // if you've added any identifier or used indexing format
