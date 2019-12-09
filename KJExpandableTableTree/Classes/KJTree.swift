@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-open class KJTree{
+open class KJTree {
     
     // Parent to child collection.
     fileprivate var arrayParents: [Parent] = []
@@ -254,7 +254,7 @@ open class KJTree{
             // get parent instance and check childs of it, if yes go through it?
             let parent = arrayParents[i]
             
-            let node = Node(indexParam: "\(i)", idParam: parent.keyIdentity, givenIndexParam: parent.givenIndex)
+            let node = Node(indexParam: "\(i)", idParam: parent.keyIdentity, givenIndexParam: parent.givenIndex, details: parent.details)
             // MARK: Cle - Customized
             // copy arrayChilds to node
             node.arrayChilds = parent.arrayChilds
@@ -288,7 +288,7 @@ open class KJTree{
             
             let childIndex = parentIndex + ".\(i)"
             
-            let node = Node(indexParam: childIndex, idParam: child.keyIdentity, givenIndexParam: child.givenIndex)
+            let node = Node(indexParam: childIndex, idParam: child.keyIdentity, givenIndexParam: child.givenIndex, details: child.details)
             // MARK: Cle - Customized
             // copy arrayChilds to node
             node.arrayChilds = child.arrayChilds
@@ -539,19 +539,24 @@ open class Node {
     open var state: State = .none
     open var id: String = ""
     open var givenIndex: String = ""
+    open var details: [String: Any]?
     
     public init() {
         
     }
-    public init(indexParam: String, idParam: String, givenIndexParam: String) {
+    public init(indexParam: String,
+                idParam: String,
+                givenIndexParam: String,
+                details: [String: Any]? = nil) {
         index = indexParam
         id = idParam
         keyIdentity = idParam
         givenIndex = givenIndexParam
+        self.details = details
     }
 }
 
-open class Parent: Node{
+open class Parent: Node {
     
     public override init() {
         super.init()
@@ -561,14 +566,16 @@ open class Parent: Node{
         arrayChilds = childs()
         // print(arrayChilds)
     }
-    public init(key: String){
+    public init(key: String, details: [String: Any]? = nil) {
         super.init()
         keyIdentity = key
+        self.details = details
     }
-    public init(key: String ,childs: () -> [Child]) {
+    public init(key: String , childs: () -> [Child], details: [String: Any]? = nil) {
         super.init()
         keyIdentity = key
         arrayChilds = childs()
+        self.details = details
         // print(arrayChilds)
     }
 }
@@ -582,14 +589,15 @@ open class Child: Node{
         arrayChilds = subChilds()
         // print(arrayChilds)
     }
-    public init(key: String){
+    public init(key: String) {
         super.init()
         keyIdentity = key
     }
-    public init(key: String, subChilds: () -> [Child]) {
+    public init(key: String, subChilds: () -> [Child], details: [String: Any]? = nil) {
         super.init()
         keyIdentity = key
         arrayChilds = subChilds()
+        self.details = details
         // print(arrayChilds)
     }
 }
