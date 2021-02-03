@@ -336,7 +336,10 @@ open class KJTree {
         case expand, shrink, none
     }
     
-    open func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath, section: Int) -> Node{
+    open func tableView(_ tableView: UITableView,
+                        didSelectRowAtIndexPath indexPath: IndexPath,
+                        section: Int,
+                        skipTableUIUpdate: Bool = false) -> Node{
         
         let node = arrayVisibles[indexPath.row]
         var cellsToBeUpdated: [NSInteger] = []
@@ -413,12 +416,15 @@ open class KJTree {
             let indexpath: IndexPath = IndexPath(row: row, section: section)
             indexpathsInserted.append(indexpath)
         }
-        if expansion == .expand {
-            // Insert rows
-            tableView.insertRows(at: indexpathsInserted, with: insertRowAnimation)
-        }else{
-            // remove rows
-            tableView.deleteRows(at: indexpathsInserted, with: deleteRowAnimation)
+        
+        if !skipTableUIUpdate {
+            if expansion == .expand {
+                // Insert rows
+                tableView.insertRows(at: indexpathsInserted, with: insertRowAnimation)
+            } else{
+                // remove rows
+                tableView.deleteRows(at: indexpathsInserted, with: deleteRowAnimation)
+            }
         }
         // indicates there is some expansion or shrinking by updating previous cell with plus, minus or none.
 //        if updateStateOfRow != -1 {
